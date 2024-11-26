@@ -11,8 +11,7 @@ import Combine
 
 
 final class DefaultNetworkService : NetworkService {
-   
-    func request<T>(endPoint: any EndPoints) -> AnyPublisher<T, any Error> where T : Decodable {
+    func request<T>(endPoint: T) -> AnyPublisher<T.Response, any Error> where T : EndPoints {
         guard let url = URL(string: endPoint.baseUrl + endPoint.path) else {
             return Fail(error: NetworkError.invalidURL).eraseToAnyPublisher()
         }
@@ -32,6 +31,7 @@ final class DefaultNetworkService : NetworkService {
                 urlRequest.httpBody = jsonData
             }
             catch(let error) {
+                print("\(error.localizedDescription)")
                 return Fail(error: NetworkError.requestFailed("Encoding Body Parameter failed")).eraseToAnyPublisher()
             }
         }
@@ -46,7 +46,7 @@ final class DefaultNetworkService : NetworkService {
                     throw NetworkError.requestFailed("Request failed with statusCode \(statusCode)")
                 }
             }
-            .decode(type: T.self, decoder: JSONDecoder())
+            .decode(type: T.Response.self, decoder: JSONDecoder())
             .tryMap { (response)  in
                 return response
             }

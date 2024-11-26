@@ -16,6 +16,8 @@ enum HTTPMethod : String {
 }
 
 protocol EndPoints {
+    associatedtype Response : Decodable
+    
     var baseUrl : String { get  }
     var path : String { get }
     var method : HTTPMethod { get }

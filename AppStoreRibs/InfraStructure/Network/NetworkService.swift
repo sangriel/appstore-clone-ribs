@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol NetworkService {
-    func request<T : Decodable>(endPoint : EndPoints) -> AnyPublisher<T,Error>
+    func request<T : EndPoints>(endPoint : T) -> AnyPublisher<T.Response,Error>
 }

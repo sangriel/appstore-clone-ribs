@@ -10,6 +10,8 @@ import Foundation
 
 
 struct SearchAPI : EndPoints {
+    typealias Response = SearchListResponseDTO
+    
     var path: String {
         "/search"
     }
@@ -19,8 +21,11 @@ struct SearchAPI : EndPoints {
     }
     
     var parameter: [String : Any]? {
-        
-        
-        return [:]
+        return ["term" : term,
+                "country": "KR",
+                "limit": 25,
+                "media": "software"]
     }
+    
+    var term : String
 }
