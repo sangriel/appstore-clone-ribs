@@ -30,13 +30,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-        2FBEED542CF5F509001877DC /* Exceptions for "AppStoreRibs" folder in "AppStoreRibs" target */ = {
-            isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-            membershipExceptions = (
-                Info.plist,
-            );
-            target = 2FF6540B2CF318270046C9DB /* AppStoreRibs */;
-        };
+		2FBEED542CF5F509001877DC /* Exceptions for "AppStoreRibs" folder in "AppStoreRibs" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2FF6540B2CF318270046C9DB /* AppStoreRibs */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
