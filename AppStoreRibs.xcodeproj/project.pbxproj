@@ -29,19 +29,14 @@
 		2FF6542C2CF318290046C9DB /* AppStoreRibsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppStoreRibsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-<<<<<<< HEAD
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		2FF6540E2CF318270046C9DB /* AppStoreRibs */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-=======
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2FBEED542CF5F509001877DC /* Exceptions for "AppStoreRibs" folder in "AppStoreRibs" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 2FF6540B2CF318270046C9DB /* AppStoreRibs */;
-		};
+        2FBEED542CF5F509001877DC /* Exceptions for "AppStoreRibs" folder in "AppStoreRibs" target */ = {
+            isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+            membershipExceptions = (
+                Info.plist,
+            );
+            target = 2FF6540B2CF318270046C9DB /* AppStoreRibs */;
+        };
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -50,7 +45,6 @@
 			exceptions = (
 				2FBEED542CF5F509001877DC /* Exceptions for "AppStoreRibs" folder in "AppStoreRibs" target */,
 			);
->>>>>>> main
 			path = AppStoreRibs;
 			sourceTree = "<group>";
 		};
