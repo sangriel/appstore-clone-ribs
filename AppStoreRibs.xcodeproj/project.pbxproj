@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2FC9F67E2CF8864E00A2F736 /* ModernRIBs in Frameworks */ = {isa = PBXBuildFile; productRef = 2FC9F67D2CF8864E00A2F736 /* ModernRIBs */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		2FF654232CF318290046C9DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FC9F67E2CF8864E00A2F736 /* ModernRIBs in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = AppStoreRibs;
 			packageProductDependencies = (
+				2FC9F67D2CF8864E00A2F736 /* ModernRIBs */,
 			);
 			productName = AppStoreRibs;
 			productReference = 2FF6540C2CF318270046C9DB /* AppStoreRibs.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 2FF654032CF318270046C9DB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2FC9F5FF2CF8830400A2F736 /* XCRemoteSwiftPackageReference "ModernRIBs" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2FF6540D2CF318270046C9DB /* Products */;
 			projectDirPath = "";
@@ -571,6 +580,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2FC9F5FF2CF8830400A2F736 /* XCRemoteSwiftPackageReference "ModernRIBs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DevYeom/ModernRIBs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2FC9F67D2CF8864E00A2F736 /* ModernRIBs */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModernRIBs;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2FF654042CF318270046C9DB /* Project object */;
 }
