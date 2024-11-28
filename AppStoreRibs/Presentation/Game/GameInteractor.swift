@@ -1,5 +1,5 @@
 //
-//  AppRootInteractor.swift
+//  GameInteractor.swift
 //  AppStoreRibs
 //
 //  Created by sangmin han on 11/28/24.
@@ -7,38 +7,33 @@
 
 import ModernRIBs
 
-protocol AppRootRouting: ViewableRouting {
+protocol GameRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
-    func attachTabs()
 }
 
-protocol AppRootPresentable: Presentable {
-    var listener: AppRootPresentableListener? { get set }
-    func setInitialTabIndex(index : Int)
+protocol GamePresentable: Presentable {
+    var listener: GamePresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
-protocol AppRootListener: AnyObject {
+protocol GameListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
-final class AppRootInteractor: PresentableInteractor<AppRootPresentable>, AppRootInteractable, AppRootPresentableListener {
+final class GameInteractor: PresentableInteractor<GamePresentable>, GameInteractable, GamePresentableListener {
 
-    weak var router: AppRootRouting?
-    weak var listener: AppRootListener?
+    weak var router: GameRouting?
+    weak var listener: GameListener?
 
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
-    override init(presenter: AppRootPresentable) {
+    override init(presenter: GamePresentable) {
         super.init(presenter: presenter)
         presenter.listener = self
     }
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        router?.attachTabs()
-        presenter.setInitialTabIndex(index: 0)
-        
         // TODO: Implement business logic here.
     }
 

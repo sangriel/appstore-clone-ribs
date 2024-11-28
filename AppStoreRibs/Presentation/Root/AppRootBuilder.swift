@@ -12,7 +12,12 @@ protocol AppRootDependency: Dependency {
     // created by this RIB.
 }
 
-final class AppRootComponent: Component<AppRootDependency> {
+final class AppRootComponent: Component<AppRootDependency>,
+                              TodayDependency,
+                              GameDependency,
+                              AppDependency,
+                              ArcadeDependency,
+                              SearchDependency {
 
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
@@ -30,8 +35,22 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
     }
 
     func build() -> LaunchRouting {
-        let viewController = AppRootViewController()
+        let component = AppRootComponent(dependency: dependency)
+        let viewController = AppRootTabbarViewController()
         let interactor = AppRootInteractor(presenter: viewController)
-        return AppRootRouter(interactor: interactor, viewController: viewController)
+        
+        let todayBuilder = TodayBuilder(dependency: component)
+        let gameBuilder = GameBuilder(dependency: component)
+        let appBuilder = AppBuilder(dependency: component)
+        let arcadeBuilder = ArcadeBuilder(dependency: component)
+        let searchBuilder = SearchBuilder(dependency: component)
+       
+        return AppRootRouter(interactor: interactor,
+                             viewController: viewController,
+                             today: todayBuilder,
+                             game: gameBuilder,
+                             app: appBuilder,
+                             arcade: arcadeBuilder,
+                             search: searchBuilder)
     }
 }
