@@ -9,10 +9,12 @@ import ModernRIBs
 
 protocol AppRootRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    func attachTabs()
 }
 
 protocol AppRootPresentable: Presentable {
     var listener: AppRootPresentableListener? { get set }
+    func setInitialTabIndex(index : Int)
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
@@ -34,6 +36,9 @@ final class AppRootInteractor: PresentableInteractor<AppRootPresentable>, AppRoo
 
     override func didBecomeActive() {
         super.didBecomeActive()
+        router?.attachTabs()
+        presenter.setInitialTabIndex(index: 0)
+        
         // TODO: Implement business logic here.
     }
 

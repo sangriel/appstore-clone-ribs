@@ -17,4 +17,24 @@ protocol ArcadePresentableListener: AnyObject {
 final class ArcadeViewController: UIViewController, ArcadePresentable, ArcadeViewControllable {
 
     weak var listener: ArcadePresentableListener?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .white
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        self.setLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+extension ArcadeViewController {
+    private func setLayout() {
+        let tabItem = UITabBarItem(title: "Arcade", image: UIImage(named: "tabbar_arcade"), tag: 3)
+        self.tabBarItem = tabItem
+    }
 }

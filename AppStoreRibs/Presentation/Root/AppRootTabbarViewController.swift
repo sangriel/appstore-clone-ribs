@@ -23,9 +23,20 @@ final class AppRootTabbarViewController: UITabBarController, AppRootPresentable,
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        tabBar.isTranslucent = false
+        tabBar.tintColor = .black
+        tabBar.backgroundColor = .white
     }
     
     func setViewController(_ viewControllers : [ViewControllable]) {
         super.setViewControllers(viewControllers.map(\.uiviewController), animated: false)
+    }
+    
+    
+}
+//MARK: - Presentable
+extension AppRootTabbarViewController {
+    func setInitialTabIndex(index: Int) {
+        self.selectedIndex = index
     }
 }

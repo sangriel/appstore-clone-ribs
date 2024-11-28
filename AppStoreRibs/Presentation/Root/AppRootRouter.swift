@@ -74,9 +74,9 @@ final class AppRootRouter: LaunchRouter<AppRootInteractable, AppRootViewControll
         let viewControllers = [
             todayRouting.viewControllable,
             gameRouting.viewControllable,
-            NavigationControllable(root: appRouting.viewControllable),
+            appRouting.viewControllable,
             arcadeRouting.viewControllable,
-            searchRouting.viewControllable
+            NavigationControllable(root: searchRouting.viewControllable)
         ]
         
         self.viewController.setViewController(viewControllers)

@@ -17,4 +17,24 @@ protocol GamePresentableListener: AnyObject {
 final class GameViewController: UIViewController, GamePresentable, GameViewControllable {
 
     weak var listener: GamePresentableListener?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .white
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        self.setLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+extension GameViewController {
+    private func setLayout() {
+        let tabItem = UITabBarItem(title: "게임", image: UIImage(named: "tabbar_game"), tag: 1)
+        self.tabBarItem = tabItem
+    }
 }
