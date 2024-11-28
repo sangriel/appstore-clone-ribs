@@ -34,7 +34,7 @@ final class ArcadeViewController: UIViewController, ArcadePresentable, ArcadeVie
 }
 extension ArcadeViewController {
     private func setLayout() {
-        let tabItem = UITabBarItem(title: "Arcade", image: UIImage(named: "tabbar_arcade"), tag: 3)
+        let tabItem = UITabBarItem(title: "Arcade", image: UIImage(systemName: "arcade.stick.console"), tag: 3)
         self.tabBarItem = tabItem
     }
 }

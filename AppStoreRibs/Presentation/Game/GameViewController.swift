@@ -33,8 +33,9 @@ final class GameViewController: UIViewController, GamePresentable, GameViewContr
     }
 }
 extension GameViewController {
+   
     private func setLayout() {
-        let tabItem = UITabBarItem(title: "게임", image: UIImage(named: "tabbar_game"), tag: 1)
+        let tabItem = UITabBarItem(title: "게임", image: UIImage(systemName: "gamecontroller"), tag: 1)
         self.tabBarItem = tabItem
     }
 }

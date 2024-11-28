@@ -22,10 +22,7 @@ final class AppRootTabbarViewController: UITabBarController, AppRootPresentable,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
-        tabBar.isTranslucent = false
-        tabBar.tintColor = .black
-        tabBar.backgroundColor = .white
+        self.setLayout()
     }
     
     func setViewController(_ viewControllers : [ViewControllable]) {
@@ -33,6 +30,19 @@ final class AppRootTabbarViewController: UITabBarController, AppRootPresentable,
     }
     
     
+}
+extension AppRootTabbarViewController {
+    private func setLayout() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        tabBar.standardAppearance = appearance
+        tabBar.tintColor = .black
+        
+        if #available(iOS 15.0, *) {
+            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+        }
+    }
 }
 //MARK: - Presentable
 extension AppRootTabbarViewController {
