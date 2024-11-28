@@ -14,7 +14,7 @@ protocol AppRootPresentableListener: AnyObject {
     // interactor class.
 }
 
-final class AppRootViewController: UIViewController, AppRootPresentable, AppRootViewControllable {
+final class AppRootTabbarViewController: UITabBarController, AppRootPresentable, AppRootViewControllable {
 
     weak var listener: AppRootPresentableListener?
     
@@ -22,5 +22,10 @@ final class AppRootViewController: UIViewController, AppRootPresentable, AppRoot
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        
+    }
+    
+    func setViewController(_ viewControllers : [ViewControllable]) {
+        super.setViewControllers(viewControllers.map(\.uiviewController), animated: false)
     }
 }

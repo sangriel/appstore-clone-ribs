@@ -12,7 +12,7 @@ import ModernRIBs
 
 
 
-class AppComponent : Component<EmptyDependency>, AppRootDependency {
+class AppLaunchComponent : Component<EmptyDependency>, AppRootDependency {
     
     init() {
         super.init(dependency : EmptyComponent())
