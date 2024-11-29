@@ -12,7 +12,7 @@ protocol SearchDependency: Dependency {
     // created by this RIB.
 }
 
-final class SearchComponent: Component<SearchDependency> {
+final class SearchComponent: Component<SearchDependency>, SearchBarDependency {
 
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
@@ -34,6 +34,12 @@ final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
         let viewController = SearchViewController()
         let interactor = SearchInteractor(presenter: viewController)
         interactor.listener = listener
-        return SearchRouter(interactor: interactor, viewController: viewController)
+        
+        let searchBarBuilder = SearchBarBuilder(dependency: component)
+        
+        
+        return SearchRouter(interactor: interactor,
+                            viewController: viewController,
+                            searchBarBuilder: searchBarBuilder)
     }
 }

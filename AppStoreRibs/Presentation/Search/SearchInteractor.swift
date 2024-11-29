@@ -9,6 +9,7 @@ import ModernRIBs
 
 protocol SearchRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    func attachSearcBar()
 }
 
 protocol SearchPresentable: Presentable {
@@ -21,6 +22,8 @@ protocol SearchListener: AnyObject {
 }
 
 final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchInteractable, SearchPresentableListener {
+  
+    
 
     weak var router: SearchRouting?
     weak var listener: SearchListener?
@@ -35,10 +38,21 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
     override func didBecomeActive() {
         super.didBecomeActive()
         // TODO: Implement business logic here.
+        router?.attachSearcBar()
     }
 
     override func willResignActive() {
         super.willResignActive()
         // TODO: Pause any business logic.
+    }
+}
+extension SearchInteractor {
+    func searchStateDidChange(state: SearchBarInteractor.SearchState) {
+        print("state changed \(state)")
+        
+    }
+    
+    func searchTextDidChange(text: String) {
+        print("textDidChange \(text)")
     }
 }
