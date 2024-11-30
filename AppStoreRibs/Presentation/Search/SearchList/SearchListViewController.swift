@@ -36,6 +36,10 @@ final class SearchListViewController: UIViewController, SearchListPresentable, S
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func changeTableViewAdapater(_ adapter: any TableViewAdapter) {
+        adapter.setTableView(tableView)
+    }
 }
 extension SearchListViewController {
     private func setLayout() {

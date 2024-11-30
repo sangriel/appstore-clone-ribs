@@ -9,10 +9,8 @@ import Foundation
 import UIKit
 
 
-protocol RecentSearchWordTableViewAdapter : AnyObject  {
-    var delegate : RecentSearchWordTableViewViewAdapterDelegate? { get set }
-    var dataSource : RecentSearchWordTableViewAdapterDataSource? { get set }
-    
+protocol RecentSearchWordTableViewAdapter : AnyObject,
+                                            TableViewAdapter where Delegate == RecentSearchWordTableViewViewAdapterDelegate, DataSource == RecentSearchWordTableViewAdapterDataSource {
 }
 
 protocol RecentSearchWordTableViewViewAdapterDelegate : AnyObject {
@@ -21,23 +19,26 @@ protocol RecentSearchWordTableViewViewAdapterDelegate : AnyObject {
 
 protocol RecentSearchWordTableViewAdapterDataSource : AnyObject {
     var numberOfItems : Int { get }
-    
 }
 
 final class RecentSearchWordTableViewAdapterImp : NSObject, RecentSearchWordTableViewAdapter {
-    weak var delegate: RecentSearchWordTableViewViewAdapterDelegate?
-    weak var dataSource: RecentSearchWordTableViewAdapterDataSource?
+    weak var delegate: Delegate?
+    weak var dataSource: DataSource?
     
     init(tableView : UITableView) {
         super.init()
-        tableView.dataSource = self
-        tableView.delegate = self
         tableView.register(RecentSearchWordCell.self, forCellReuseIdentifier: RecentSearchWordCell.cellId)
         tableView.register(RecentSearchWordHeader.self, forHeaderFooterViewReuseIdentifier: RecentSearchWordHeader.headerViewId)
+    }
+    
+    func setTableView(_ tableView: UITableView) {
+        tableView.dataSource = self
+        tableView.delegate = self
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
     }
+    
 }
 extension RecentSearchWordTableViewAdapterImp : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

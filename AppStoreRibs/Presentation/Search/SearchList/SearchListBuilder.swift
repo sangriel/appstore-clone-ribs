@@ -34,7 +34,8 @@ final class SearchListBuilder: Builder<SearchListDependency>, SearchListBuildabl
         let viewController = SearchListViewController()
         let tableView = viewController.tableView
         let interactor = SearchListInteractor(presenter: viewController,
-                                              recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapterImp(tableView: tableView))
+                                              recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapterImp(tableView: tableView),
+                                              matchSearchWordTableViewAdapater: MatchSearchWordTableViewAdapterImp(tableView: tableView))
         interactor.listener = listener
         return SearchListRouter(interactor: interactor, viewController: viewController)
     }
