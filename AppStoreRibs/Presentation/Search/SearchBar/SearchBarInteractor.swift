@@ -54,8 +54,14 @@ final class SearchBarInteractor: PresentableInteractor<SearchBarPresentable>, Se
 }
 extension SearchBarInteractor {
     func didChangeText(text: String) {
-        self.currentState = .onSearch
-        self.listener?.searchStateDidChange(state: .onSearch)
+        if text == "" {
+            self.currentState = .onEmpty
+            self.listener?.searchStateDidChange(state: .onEmpty)
+        }
+        else {
+            self.currentState = .onSearch
+            self.listener?.searchStateDidChange(state: .onSearch)
+        }
         self.listener?.searchTextDidChange(text: text)
     }
     
