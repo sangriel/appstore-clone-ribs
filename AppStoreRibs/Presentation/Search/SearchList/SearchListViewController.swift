@@ -15,7 +15,6 @@ protocol SearchListPresentableListener: AnyObject {
 }
 
 final class SearchListViewController: UIViewController, SearchListPresentable, SearchListViewControllable {
-
     weak var listener: SearchListPresentableListener?
     
     lazy var tableView : UITableView = {
@@ -25,9 +24,9 @@ final class SearchListViewController: UIViewController, SearchListPresentable, S
         tableView.rowHeight = UITableView.automaticDimension
         tableView.keyboardDismissMode = .onDrag
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .blue
         return tableView
     }()
-    
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -37,7 +36,6 @@ final class SearchListViewController: UIViewController, SearchListPresentable, S
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 extension SearchListViewController {
     private func setLayout() {

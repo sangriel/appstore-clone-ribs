@@ -25,7 +25,7 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
     weak var router: SearchListRouting?
     weak var listener: SearchListListener?
     
-    private weak var recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapter?
+    private var recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapter?
     
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
@@ -51,7 +51,6 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
 extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, RecentSearchWordTableViewViewAdapterDelegate {
     var numberOfItems: Int {
         //TODO: 나중에 repository에서 바로 끌어오는 식으로
-        return 0
+        return 10
     }
-    
 }

@@ -17,6 +17,7 @@ class RecentSearchWordCell : UITableViewCell {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.textColor = .systemBlue
         lb.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        lb.text = "text"
         return lb
     }()
     
@@ -29,7 +30,6 @@ class RecentSearchWordCell : UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setLayout()
     }
     
