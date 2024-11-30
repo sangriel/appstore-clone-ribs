@@ -33,6 +33,10 @@ final class RecentSearchWordTableViewAdapterImp : NSObject, RecentSearchWordTabl
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(RecentSearchWordCell.self, forCellReuseIdentifier: RecentSearchWordCell.cellId)
+        tableView.register(RecentSearchWordHeader.self, forHeaderFooterViewReuseIdentifier: RecentSearchWordHeader.headerViewId)
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
     }
 }
 extension RecentSearchWordTableViewAdapterImp : UITableViewDataSource {
@@ -46,5 +50,13 @@ extension RecentSearchWordTableViewAdapterImp : UITableViewDataSource {
     }
 }
 extension RecentSearchWordTableViewAdapterImp : UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: RecentSearchWordHeader.headerViewId) as! RecentSearchWordHeader
+        
+        return view
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40 + 20
+    }
 }
