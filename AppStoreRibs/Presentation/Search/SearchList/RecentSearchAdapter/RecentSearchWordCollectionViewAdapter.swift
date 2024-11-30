@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-protocol RecentSearchWordTableViewAdapter  {
+protocol RecentSearchWordTableViewAdapter : AnyObject  {
     var delegate : RecentSearchWordTableViewViewAdapterDelegate? { get set }
     var dataSource : RecentSearchWordTableViewAdapterDataSource? { get set }
     
@@ -28,12 +28,8 @@ final class RecentSearchWordTableViewAdapterImp : NSObject, RecentSearchWordTabl
     weak var delegate: RecentSearchWordTableViewViewAdapterDelegate?
     weak var dataSource: RecentSearchWordTableViewAdapterDataSource?
     
-    init(tableView : UITableView,
-         dataSource : RecentSearchWordTableViewAdapterDataSource,
-         delegate : RecentSearchWordTableViewViewAdapterDelegate) {
+    init(tableView : UITableView) {
         super.init()
-        self.dataSource = dataSource
-        self.delegate = delegate
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(RecentSearchWordCell.self, forCellReuseIdentifier: RecentSearchWordCell.cellId)

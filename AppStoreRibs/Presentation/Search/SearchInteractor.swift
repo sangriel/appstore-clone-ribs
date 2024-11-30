@@ -35,6 +35,7 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
     override func didBecomeActive() {
         super.didBecomeActive()
         // TODO: Implement business logic here.
+        print("interactor didBecomeActive")
     }
 
     override func willResignActive() {

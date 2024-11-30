@@ -21,10 +21,12 @@ final class SearchViewController: UIViewController, SearchPresentable, SearchVie
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        print("SearchViewController viewDidLoad")
     }
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        print("SearchViewController init")
         self.setLayout()
     }
     

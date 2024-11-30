@@ -32,7 +32,9 @@ final class SearchListBuilder: Builder<SearchListDependency>, SearchListBuildabl
     func build(withListener listener: SearchListListener) -> SearchListRouting {
         let component = SearchListComponent(dependency: dependency)
         let viewController = SearchListViewController()
-        let interactor = SearchListInteractor(presenter: viewController)
+        let tableView = viewController.tableView
+        let interactor = SearchListInteractor(presenter: viewController,
+                                              recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapterImp(tableView: tableView))
         interactor.listener = listener
         return SearchListRouter(interactor: interactor, viewController: viewController)
     }

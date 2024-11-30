@@ -24,12 +24,18 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
 
     weak var router: SearchListRouting?
     weak var listener: SearchListListener?
-
+    
+    private weak var recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapter?
+    
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
-    override init(presenter: SearchListPresentable) {
+    init(presenter: SearchListPresentable,
+         recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapter) {
         super.init(presenter: presenter)
         presenter.listener = self
+        self.recentSearchWordTableViewAdapter = recentSearchWordTableViewAdapter
+        self.recentSearchWordTableViewAdapter?.delegate = self
+        self.recentSearchWordTableViewAdapter?.dataSource = self
     }
 
     override func didBecomeActive() {
@@ -41,4 +47,11 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
         super.willResignActive()
         // TODO: Pause any business logic.
     }
+}
+extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, RecentSearchWordTableViewViewAdapterDelegate {
+    var numberOfItems: Int {
+        //TODO: 나중에 repository에서 바로 끌어오는 식으로
+        return 0
+    }
+    
 }
