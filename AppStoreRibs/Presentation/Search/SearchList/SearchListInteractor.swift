@@ -35,6 +35,7 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
     
     private var recentSearchWordTableViewAdapter: (any RecentSearchWordTableViewAdapter)?
     private var matchSearchWordTableViewAdapter: (any MatchSearchWordTableViewAdapter)?
+    private var searchResultTableViewAdapater : (any SearchResultTableViewAdapter)?
     
     private let dependency : SearchListInteractorDependency
     private var cancellables: Set<AnyCancellable> = .init()
@@ -44,7 +45,8 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
     init(presenter: SearchListPresentable,
          dependency : SearchListInteractorDependency,
          recentSearchWordTableViewAdapter: any RecentSearchWordTableViewAdapter,
-         matchSearchWordTableViewAdapater : any MatchSearchWordTableViewAdapter) {
+         matchSearchWordTableViewAdapater : any MatchSearchWordTableViewAdapter,
+    searchResultTableViewAdapater : any SearchResultTableViewAdapter) {
         self.dependency = dependency
         self.cancellables = .init()
         super.init(presenter: presenter)
@@ -55,6 +57,9 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
         self.matchSearchWordTableViewAdapter = matchSearchWordTableViewAdapater
         self.matchSearchWordTableViewAdapter?.delegate = self
         self.matchSearchWordTableViewAdapter?.dataSource = self
+        self.searchResultTableViewAdapater = searchResultTableViewAdapater
+        self.searchResultTableViewAdapater?.delegate = self
+        self.searchResultTableViewAdapater?.dataSource = self
     }
 
     override func didBecomeActive() {
@@ -98,5 +103,8 @@ extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, Rec
     }
 }
 extension SearchListInteractor : MatchSearchWordTableViewDataSource, MatchSearchWordTableViewAdapterDelegate {
+    
+}
+extension SearchListInteractor : SearchResultTableViewAdapterDataSource, SearchResultTableViewAdapterDelegate {
     
 }
