@@ -24,8 +24,7 @@ protocol SearchListener: AnyObject {
 }
 
 protocol SearchInteractorDependency {
-    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> { get }
-    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> { get }
+    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
 }
 
 final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchInteractable, SearchPresentableListener {
@@ -56,22 +55,13 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
         // TODO: Pause any business logic.
     }
 }
-extension SearchInteractor {
-    func recentTempBtnTapped() {
-        dependency.changeTableViewAdapterToRecentSearchWordSubject.send()
-    }
-    
-    func matchTempBtnTapped() {
-        dependency.changeTableViewAdapterToMatchSearchWordSubject.send()
-    }
-}
-//MARK: - Presentable Listener
+//MARK: - SearchBarInteractor Listener
 extension SearchInteractor {
     func searchStateDidChange(state: SearchBarInteractor.SearchState) {
-        print("state changed \(state)")
+        dependency.currentSearchStateSubject.send(state)
     }
     
     func searchTextDidChange(text: String) {
-        print("textDidChange \(text)")
+        
     }
 }

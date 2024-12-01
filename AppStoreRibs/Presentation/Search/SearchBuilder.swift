@@ -16,10 +16,8 @@ protocol SearchDependency: Dependency {
 final class SearchComponent: Component<SearchDependency>,
                              SearchBarDependency,
                              SearchInteractorDependency,
-                             SearchListDependency{
-    var changeTableViewAdapterToRecentSearchWordSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    
-    var changeTableViewAdapterToMatchSearchWordSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+                             SearchListDependency {
+    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> = PassthroughSubject<SearchBarInteractor.SearchState, Never>()
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
@@ -47,7 +45,7 @@ final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
        
         return SearchRouter(interactor: interactor,
                             viewController: viewController,
-                            searchBarBuilder: searchBarBuilder,
-                            searchListBuildable: searchListBuildable)
+                            searchListBuildable: searchListBuildable,
+                            searchBarBuilder: searchBarBuilder)
     }
 }
