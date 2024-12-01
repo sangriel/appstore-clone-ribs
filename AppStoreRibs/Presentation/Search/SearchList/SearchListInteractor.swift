@@ -24,8 +24,7 @@ protocol SearchListListener: AnyObject {
 }
 
 protocol SearchListInteractorDependency {
-    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> { get }
-    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> { get }
+    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
 }
 
 final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, SearchListInteractable, SearchListPresentableListener {
@@ -78,19 +77,22 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
 }
 extension SearchListInteractor {
     private func bindDependencies() {
-        dependency.changeTableViewAdapterToMatchSearchWordSubject
+        dependency.currentSearchStateSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self = self, let adapter = matchSearchWordTableViewAdapter else { return }
-                self.presenter.changeTableViewAdapater(adapter)
-            }
-            .store(in: &cancellables)
-        
-        dependency.changeTableViewAdapterToRecentSearchWordSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self]  in
-                guard let self = self, let adapter = recentSearchWordTableViewAdapter else { return }
-                self.presenter.changeTableViewAdapater(adapter)
+            .sink { [weak self] state in
+                guard let self = self else { return }
+                if state == .onEmpty {
+                    guard let adapter = recentSearchWordTableViewAdapter else { return }
+                    self.presenter.changeTableViewAdapater(adapter)
+                }
+                else if state == .onSearch {
+                    guard let adapter = matchSearchWordTableViewAdapter else { return }
+                    self.presenter.changeTableViewAdapater(adapter)
+                }
+                else {
+                    guard let adapter = searchResultTableViewAdapater else { return }
+                    self.presenter.changeTableViewAdapater(adapter)
+                }
             }
             .store(in: &cancellables)
     }

@@ -10,17 +10,13 @@ import Combine
 protocol SearchListDependency: Dependency {
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
     // created by this RIB.
-    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> { get }
-    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> { get }
+    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
 }
 
 final class SearchListComponent: Component<SearchListDependency>,
                                  SearchListInteractorDependency {
-    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> {
-        dependency.changeTableViewAdapterToRecentSearchWordSubject
-    }
-    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> {
-        dependency.changeTableViewAdapterToMatchSearchWordSubject
+    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> {
+        dependency.currentSearchStateSubject
     }
 }
 
