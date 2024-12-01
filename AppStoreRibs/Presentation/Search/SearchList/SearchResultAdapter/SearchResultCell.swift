@@ -87,8 +87,51 @@ class SearchResultCell : UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
     }
+    
     required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    func configureCell(searchResult: SearchResult) {
+        appIconImageView.image = nil
+        screehShotImageViews.forEach { view in
+            view.image = nil
+        }
+
+        titleLabel.text = searchResult.titleLabel
+        subTitleLabel.text = searchResult.subTitleLabel
+        ratingLabel.text = searchResult.userRatingCount
+        ratingView.setRating(rating: searchResult.averageRating)
+        
+        Task {
+            await withTaskGroup(of: Void.self) { [weak self] group in
+                guard let self = self else { return }
+                group.addTask {
+                    do {
+                        let image = try await ImageDownloader.download(from: searchResult.appIconUrl)
+                        await MainActor.run {
+                            self.appIconImageView.image = image
+                        }
+                    }
+                    catch(let error) {
+                        print(error)
+                    }
+                }
+                for i in 0..<min(searchResult.screenShotUrls.count,3) {
+                    group.addTask {
+                        do {
+                            let image = try await ImageDownloader.download(from: searchResult.screenShotUrls[i])
+                            await MainActor.run {
+                                self.screehShotImageViews[i].image = image
+                            }
+                        }
+                        catch(let error) {
+                            print(error)
+                        }
+                    }
+                }
+            }
+        }
     }
     
 }

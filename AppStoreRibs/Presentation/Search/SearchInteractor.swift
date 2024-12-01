@@ -25,7 +25,9 @@ protocol SearchListener: AnyObject {
 
 protocol SearchInteractorDependency {
     var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
+    var reloadDataSubject: PassthroughSubject<Void, Never> { get }
     var searchUseCase : SearchUseCase { get }
+    var searchResults : [SearchResult] { get set }
 }
 
 final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchInteractable, SearchPresentableListener {
@@ -33,7 +35,7 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
     weak var router: SearchRouting?
     weak var listener: SearchListener?
 
-    private let dependency: SearchInteractorDependency
+    private var dependency: SearchInteractorDependency
     
     private var cancellables: Set<AnyCancellable> = .init()
     // TODO: Add additional dependencies to constructor. Do not perform any logic
@@ -74,8 +76,10 @@ extension SearchInteractor {
                 if case let .failure(error) = error {
                     print(error)
                 }
-            } receiveValue: { result in
-                print(result)
+            } receiveValue: { [weak self] result in
+                guard let self = self else { return }
+                dependency.searchResults = result
+                dependency.reloadDataSubject.send()
             }
             .store(in: &cancellables)
     }

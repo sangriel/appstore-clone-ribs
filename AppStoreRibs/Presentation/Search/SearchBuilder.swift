@@ -17,9 +17,10 @@ final class SearchComponent: Component<SearchDependency>,
                              SearchBarDependency,
                              SearchInteractorDependency,
                              SearchListDependency {
+
     var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> = PassthroughSubject<SearchBarInteractor.SearchState, Never>()
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-    
+    var reloadDataSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+    var searchResults: [SearchResult] = []
     let searchUseCase: SearchUseCase
     
     init(dependency : SearchDependency,
@@ -27,7 +28,6 @@ final class SearchComponent: Component<SearchDependency>,
         self.searchUseCase = searchUseCase
         super.init(dependency: dependency)
     }
-    
 }
 
 // MARK: - Builder

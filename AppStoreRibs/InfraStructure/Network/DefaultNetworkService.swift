@@ -44,7 +44,6 @@ final class DefaultNetworkService : NetworkService {
         
         return URLSession.shared.dataTaskPublisher(for: urlRequest)
             .tryMap{ (data,response) -> Data in
-                print(String(data: data, encoding: .utf8) ?? "")
                 if let httpResponse = response as? HTTPURLResponse, (200...300).contains(httpResponse.statusCode) {
                     return data
                 }

@@ -11,12 +11,23 @@ protocol SearchListDependency: Dependency {
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
     // created by this RIB.
     var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
+    
+    var reloadDataSubject: PassthroughSubject<Void, Never> { get }
+    var searchResults : [SearchResult] { get }
 }
 
 final class SearchListComponent: Component<SearchListDependency>,
                                  SearchListInteractorDependency {
+    var reloadDataSubject: PassthroughSubject<Void, Never> {
+        dependency.reloadDataSubject
+    }
+    
     var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> {
         dependency.currentSearchStateSubject
+    }
+    
+    var searchResults: [SearchResult] {
+        dependency.searchResults
     }
 }
 

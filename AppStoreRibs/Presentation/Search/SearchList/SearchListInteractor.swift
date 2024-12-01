@@ -17,6 +17,7 @@ protocol SearchListPresentable: Presentable {
     var listener: SearchListPresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
     func changeTableViewAdapater(_ adapter : any TableViewAdapter)
+    func reloadTableView()
 }
 
 protocol SearchListListener: AnyObject {
@@ -25,6 +26,8 @@ protocol SearchListListener: AnyObject {
 
 protocol SearchListInteractorDependency {
     var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
+    var reloadDataSubject : PassthroughSubject<Void,Never> { get }
+    var searchResults : [SearchResult] { get }
 }
 
 final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, SearchListInteractable, SearchListPresentableListener {
@@ -38,6 +41,8 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
     
     private let dependency : SearchListInteractorDependency
     private var cancellables: Set<AnyCancellable> = .init()
+    private var currentState : SearchBarInteractor.SearchState = .onEmpty
+    
     
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
@@ -81,6 +86,7 @@ extension SearchListInteractor {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self = self else { return }
+                self.currentState = state
                 if state == .onEmpty {
                     guard let adapter = recentSearchWordTableViewAdapter else { return }
                     self.presenter.changeTableViewAdapater(adapter)
@@ -95,18 +101,35 @@ extension SearchListInteractor {
                 }
             }
             .store(in: &cancellables)
+        
+        
+        dependency.reloadDataSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.presenter.reloadTableView()
+            }
+            .store(in: &cancellables)
     }
     
 }
 extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, RecentSearchWordTableViewViewAdapterDelegate {
     var numberOfItems: Int {
-        //TODO: 나중에 repository에서 바로 끌어오는 식으로
-        return 10
+        switch currentState {
+        case .onComplete:
+            return dependency.searchResults.count
+        case .onEmpty:
+            return 0
+        case .onSearch:
+            return 0
+        }
     }
 }
 extension SearchListInteractor : MatchSearchWordTableViewDataSource, MatchSearchWordTableViewAdapterDelegate {
-    
+ 
 }
 extension SearchListInteractor : SearchResultTableViewAdapterDataSource, SearchResultTableViewAdapterDelegate {
     
+    func getSearchResult(at IndexPath: IndexPath) -> SearchResult? {
+        return dependency.searchResults[safe: IndexPath.row]
+    }
 }
