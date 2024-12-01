@@ -7,13 +7,14 @@
 
 import ModernRIBs
 
-protocol SearchInteractable: Interactable, SearchBarListener {
+protocol SearchInteractable: Interactable, SearchBarListener, SearchListListener{
     var router: SearchRouting? { get set }
     var listener: SearchListener? { get set }
 }
 
 protocol SearchViewControllable: ViewControllable {
     // TODO: Declare methods the router invokes to manipulate the view hierarchy.
+    func setListTableView(_ viewController : ViewControllable)
     func attachSearchBarController(searchController : ViewControllable)
 }
 
@@ -22,13 +23,28 @@ final class SearchRouter: ViewableRouter<SearchInteractable, SearchViewControlla
     private let searchBarBuilder : SearchBarBuildable
     private var searchBarRouting : Routing?
 
+    private let searchListBuildable : SearchListBuildable
+    private var searchListRouting : Routing?
+    
     // TODO: Constructor inject child builder protocols to allow building children.
     init(interactor: SearchInteractable,
-                  viewController: SearchViewControllable,
-                  searchBarBuilder: SearchBarBuildable) {
+         viewController: SearchViewControllable,
+         searchListBuildable : SearchListBuildable,
+         searchBarBuilder: SearchBarBuildable) {
+        self.searchListBuildable = searchListBuildable
         self.searchBarBuilder = searchBarBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
+    }
+    
+}
+extension SearchRouter {
+    func attachSearchList() {
+        if searchListRouting != nil { return }
+        let routing = searchListBuildable.build(withListener: interactor)
+        self.searchListRouting = routing
+        self.viewController.setListTableView(routing.viewControllable)
+        attachChild(routing)
     }
 }
 extension SearchRouter {
