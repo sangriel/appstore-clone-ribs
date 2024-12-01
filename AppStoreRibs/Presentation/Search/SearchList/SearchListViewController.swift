@@ -24,7 +24,6 @@ final class SearchListViewController: UIViewController, SearchListPresentable, S
         tableView.rowHeight = UITableView.automaticDimension
         tableView.keyboardDismissMode = .onDrag
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .blue
         return tableView
     }()
     

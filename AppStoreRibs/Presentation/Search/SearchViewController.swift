@@ -52,11 +52,10 @@ extension SearchViewController {
         self.view.addSubview(vc.view)
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            vc.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            vc.view.topAnchor.constraint(equalTo: self.view.topAnchor),
             vc.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             vc.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            vc.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-            
+            vc.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         vc.didMove(toParent: self)
     }
