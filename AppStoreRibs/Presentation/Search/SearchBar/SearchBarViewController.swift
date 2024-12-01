@@ -17,7 +17,7 @@ protocol SearchBarPresentableListener: AnyObject {
     func didChangeText( text: String)
     func didBeginEditing()
     func didEndEditing()
-    func searchButtonClicked()
+    func searchButtonClicked(term : String)
     func cancelButtonClicked()
 }
 
@@ -55,7 +55,7 @@ extension SearchBarViewController : UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        listener?.searchButtonClicked()
+        listener?.searchButtonClicked(term : searchBar.text ?? "")
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

@@ -19,12 +19,21 @@ final class SearchComponent: Component<SearchDependency>,
                              SearchListDependency {
     var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> = PassthroughSubject<SearchBarInteractor.SearchState, Never>()
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+    
+    let searchUseCase: SearchUseCase
+    
+    init(dependency : SearchDependency,
+         searchUseCase : SearchUseCase) {
+        self.searchUseCase = searchUseCase
+        super.init(dependency: dependency)
+    }
+    
 }
 
 // MARK: - Builder
 
 protocol SearchBuildable: Buildable {
-    func build(withListener listener: SearchListener) -> SearchRouting
+    func build(withListener listener: SearchListener,searchUseCase : SearchUseCase) -> SearchRouting
 }
 
 final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
@@ -33,8 +42,9 @@ final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: SearchListener) -> SearchRouting {
-        let component = SearchComponent(dependency: dependency)
+    func build(withListener listener: SearchListener,searchUseCase : SearchUseCase) -> SearchRouting {
+        let component = SearchComponent(dependency: dependency,
+                                        searchUseCase: searchUseCase)
         let viewController = SearchViewController()
         let interactor = SearchInteractor(presenter: viewController,
                                           dependency: component)

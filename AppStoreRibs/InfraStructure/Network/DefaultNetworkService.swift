@@ -12,11 +12,8 @@ import Combine
 
 final class DefaultNetworkService : NetworkService {
     func request<T>(endPoint: T) -> AnyPublisher<T.Response, any Error> where T : EndPoints {
-        guard let url = URL(string: endPoint.baseUrl + endPoint.path) else {
-            return Fail(error: NetworkError.invalidURL).eraseToAnyPublisher()
-        }
-        
-        var urlRequest = URLRequest(url: url)
+        let urlString = endPoint.baseUrl + endPoint.path
+        var urlComponents = URLComponents(string: urlString)
         
         if endPoint.method == .GET || endPoint.method == .DELETE {
             var queryItems : [URLQueryItem] = []
@@ -24,8 +21,17 @@ final class DefaultNetworkService : NetworkService {
                 let queryItem = URLQueryItem(name: key, value: "\(value)" )
                 queryItems.append(queryItem)
             }
+            urlComponents?.queryItems = queryItems
         }
-        else {
+        
+        guard let url = urlComponents?.url else {
+            return Fail(error: NetworkError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = endPoint.method.rawValue
+        
+        if endPoint.method == .POST || endPoint.method == .PUT  {
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: endPoint.parameter ?? [:])
                 urlRequest.httpBody = jsonData
@@ -38,6 +44,7 @@ final class DefaultNetworkService : NetworkService {
         
         return URLSession.shared.dataTaskPublisher(for: urlRequest)
             .tryMap{ (data,response) -> Data in
+                print(String(data: data, encoding: .utf8) ?? "")
                 if let httpResponse = response as? HTTPURLResponse, (200...300).contains(httpResponse.statusCode) {
                     return data
                 }
