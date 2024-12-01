@@ -18,6 +18,7 @@ protocol SearchPresentableListener: AnyObject {
 }
 
 final class SearchViewController: UIViewController, SearchPresentable, SearchViewControllable {
+    
 
     weak var listener: SearchPresentableListener?
     
@@ -107,5 +108,13 @@ extension SearchViewController {
             
         ])
         vc.didMove(toParent: self)
+    }
+}
+extension SearchViewController {
+    func attachSearchBarController(searchController: any ModernRIBs.ViewControllable) {
+        guard let searchController = searchController as? UISearchController else { return }
+        self.navigationItem.searchController = searchController
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.placeholder = "게임, 앱, 스토리 등"
     }
 }

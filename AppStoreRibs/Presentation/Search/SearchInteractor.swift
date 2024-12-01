@@ -11,6 +11,7 @@ import Combine
 protocol SearchRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
     func attachSearchList()
+    func attachSearcBar()
 }
 
 protocol SearchPresentable: Presentable {
@@ -28,7 +29,7 @@ protocol SearchInteractorDependency {
 }
 
 final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchInteractable, SearchPresentableListener {
-
+    
     weak var router: SearchRouting?
     weak var listener: SearchListener?
 
@@ -47,6 +48,7 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
         super.didBecomeActive()
         // TODO: Implement business logic here.
         router?.attachSearchList()
+        router?.attachSearcBar()
     }
 
     override func willResignActive() {
@@ -54,7 +56,6 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
         // TODO: Pause any business logic.
     }
 }
-//MARK: - Presentable Listener
 extension SearchInteractor {
     func recentTempBtnTapped() {
         dependency.changeTableViewAdapterToRecentSearchWordSubject.send()
@@ -62,5 +63,15 @@ extension SearchInteractor {
     
     func matchTempBtnTapped() {
         dependency.changeTableViewAdapterToMatchSearchWordSubject.send()
+    }
+}
+//MARK: - Presentable Listener
+extension SearchInteractor {
+    func searchStateDidChange(state: SearchBarInteractor.SearchState) {
+        print("state changed \(state)")
+    }
+    
+    func searchTextDidChange(text: String) {
+        print("textDidChange \(text)")
     }
 }

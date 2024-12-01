@@ -14,12 +14,12 @@ protocol SearchDependency: Dependency {
 }
 
 final class SearchComponent: Component<SearchDependency>,
+                             SearchBarDependency,
                              SearchInteractorDependency,
                              SearchListDependency{
     var changeTableViewAdapterToRecentSearchWordSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
     
     var changeTableViewAdapterToMatchSearchWordSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
@@ -43,9 +43,11 @@ final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
         interactor.listener = listener
         
         let searchListBuildable = SearchListBuilder(dependency: component)
-        
+        let searchBarBuilder = SearchBarBuilder(dependency: component)
+       
         return SearchRouter(interactor: interactor,
                             viewController: viewController,
+                            searchBarBuilder: searchBarBuilder,
                             searchListBuildable: searchListBuildable)
     }
 }
