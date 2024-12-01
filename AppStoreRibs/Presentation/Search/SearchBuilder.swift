@@ -6,6 +6,7 @@
 //
 
 import ModernRIBs
+import Combine
 
 protocol SearchDependency: Dependency {
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
@@ -13,8 +14,12 @@ protocol SearchDependency: Dependency {
 }
 
 final class SearchComponent: Component<SearchDependency>,
+                             SearchInteractorDependency,
                              SearchListDependency{
-
+    var changeTableViewAdapterToRecentSearchWordSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+    
+    var changeTableViewAdapterToMatchSearchWordSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+    
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
@@ -33,7 +38,8 @@ final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
     func build(withListener listener: SearchListener) -> SearchRouting {
         let component = SearchComponent(dependency: dependency)
         let viewController = SearchViewController()
-        let interactor = SearchInteractor(presenter: viewController)
+        let interactor = SearchInteractor(presenter: viewController,
+                                          dependency: component)
         interactor.listener = listener
         
         let searchListBuildable = SearchListBuilder(dependency: component)

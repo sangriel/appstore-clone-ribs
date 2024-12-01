@@ -4,17 +4,24 @@
 //
 //  Created by sangmin han on 11/30/24.
 //
-
 import ModernRIBs
+import Combine
 
 protocol SearchListDependency: Dependency {
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
     // created by this RIB.
+    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> { get }
+    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> { get }
 }
 
-final class SearchListComponent: Component<SearchListDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+final class SearchListComponent: Component<SearchListDependency>,
+                                 SearchListInteractorDependency {
+    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> {
+        dependency.changeTableViewAdapterToRecentSearchWordSubject
+    }
+    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> {
+        dependency.changeTableViewAdapterToMatchSearchWordSubject
+    }
 }
 
 // MARK: - Builder
@@ -34,6 +41,7 @@ final class SearchListBuilder: Builder<SearchListDependency>, SearchListBuildabl
         let viewController = SearchListViewController()
         let tableView = viewController.tableView
         let interactor = SearchListInteractor(presenter: viewController,
+                                              dependency: component,
                                               recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapterImp(tableView: tableView),
                                               matchSearchWordTableViewAdapater: MatchSearchWordTableViewAdapterImp(tableView: tableView))
         interactor.listener = listener

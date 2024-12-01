@@ -6,6 +6,8 @@
 //
 
 import ModernRIBs
+import Combine
+import Foundation
 
 protocol SearchListRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
@@ -19,9 +21,12 @@ protocol SearchListPresentable: Presentable {
 
 protocol SearchListListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-   
 }
 
+protocol SearchListInteractorDependency {
+    var changeTableViewAdapterToRecentSearchWordSubject : PassthroughSubject<Void,Never> { get }
+    var changeTableViewAdapterToMatchSearchWordSubject : PassthroughSubject<Void,Never> { get }
+}
 
 final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, SearchListInteractable, SearchListPresentableListener {
 
@@ -31,11 +36,17 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
     private var recentSearchWordTableViewAdapter: (any RecentSearchWordTableViewAdapter)?
     private var matchSearchWordTableViewAdapter: (any MatchSearchWordTableViewAdapter)?
     
+    private let dependency : SearchListInteractorDependency
+    private var cancellables: Set<AnyCancellable> = .init()
+    
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
     init(presenter: SearchListPresentable,
+         dependency : SearchListInteractorDependency,
          recentSearchWordTableViewAdapter: any RecentSearchWordTableViewAdapter,
          matchSearchWordTableViewAdapater : any MatchSearchWordTableViewAdapter) {
+        self.dependency = dependency
+        self.cancellables = .init()
         super.init(presenter: presenter)
         presenter.listener = self
         self.recentSearchWordTableViewAdapter = recentSearchWordTableViewAdapter
@@ -52,12 +63,33 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
         if let recentSearchWordTableViewAdapter = recentSearchWordTableViewAdapter {
             presenter.changeTableViewAdapater(recentSearchWordTableViewAdapter)
         }
+        bindDependencies()
     }
 
     override func willResignActive() {
         super.willResignActive()
         // TODO: Pause any business logic.
     }
+}
+extension SearchListInteractor {
+    private func bindDependencies() {
+        dependency.changeTableViewAdapterToMatchSearchWordSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self, let adapter = matchSearchWordTableViewAdapter else { return }
+                self.presenter.changeTableViewAdapater(adapter)
+            }
+            .store(in: &cancellables)
+        
+        dependency.changeTableViewAdapterToRecentSearchWordSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self]  in
+                guard let self = self, let adapter = recentSearchWordTableViewAdapter else { return }
+                self.presenter.changeTableViewAdapater(adapter)
+            }
+            .store(in: &cancellables)
+    }
+    
 }
 extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, RecentSearchWordTableViewViewAdapterDelegate {
     var numberOfItems: Int {

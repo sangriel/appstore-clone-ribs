@@ -33,7 +33,7 @@ final class MatchSearchWordTableViewAdapterImp : NSObject,  MatchSearchWordTable
     
     func setTableView(_ tableView: UITableView) {
         tableView.delegate = self
-    
+        tableView.dataSource = self
     }
 }
 extension MatchSearchWordTableViewAdapterImp : UITableViewDataSource {
@@ -47,4 +47,5 @@ extension MatchSearchWordTableViewAdapterImp : UITableViewDataSource {
     }
 }
 extension MatchSearchWordTableViewAdapterImp : UITableViewDelegate {
+    
 }
