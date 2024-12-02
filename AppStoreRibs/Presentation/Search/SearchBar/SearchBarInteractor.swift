@@ -20,6 +20,7 @@ protocol SearchBarListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
     func searchStateDidChange(state : SearchBarInteractor.SearchState )
     func searchTextDidChange(text : String)
+    func requestRemoteFetch(term : String)
 }
 
 final class SearchBarInteractor: PresentableInteractor<SearchBarPresentable>, SearchBarInteractable, SearchBarPresentableListener {
@@ -73,8 +74,9 @@ extension SearchBarInteractor {
         
     }
     
-    func searchButtonClicked() {
+    func searchButtonClicked(term : String) {
         self.currentState = .onComplete
+        self.listener?.requestRemoteFetch(term: term)
         self.listener?.searchStateDidChange(state: .onComplete)
     }
     

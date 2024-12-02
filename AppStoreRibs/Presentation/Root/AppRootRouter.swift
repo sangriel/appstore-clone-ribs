@@ -59,11 +59,17 @@ final class AppRootRouter: LaunchRouter<AppRootInteractable, AppRootViewControll
     }
     
     func attachTabs() {
+        let networkService = DefaultNetworkService()
+        
         let todayRouting = today.build(withListener: interactor)
         let gameRouting = game.build(withListener: interactor)
         let appRouting = app.build(withListener: interactor)
         let arcadeRouting = arcade.build(withListener: interactor)
-        let searchRouting = search.build(withListener: interactor)
+        
+        let searchRepository = DefaultSearchRepository(networkService: networkService)
+        let searchUseCase = DefaultSearchUseCase(searchRepository: searchRepository)
+        let searchRouting = search.build(withListener: interactor,
+                                         searchUseCase: searchUseCase)
         
         attachChild(todayRouting)
         attachChild(gameRouting)
