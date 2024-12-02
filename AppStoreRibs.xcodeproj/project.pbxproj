@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F85A81F2CFDDF4B008B3E04 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 2F85A81E2CFDDF4B008B3E04 /* CombineExt */; };
 		2FC9F67E2CF8864E00A2F736 /* ModernRIBs in Frameworks */ = {isa = PBXBuildFile; productRef = 2FC9F67D2CF8864E00A2F736 /* ModernRIBs */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F85A81F2CFDDF4B008B3E04 /* CombineExt in Frameworks */,
 				2FC9F67E2CF8864E00A2F736 /* ModernRIBs in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,12 +92,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F85A81A2CFDDE7F008B3E04 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2FF654032CF318270046C9DB = {
 			isa = PBXGroup;
 			children = (
 				2FF6540E2CF318270046C9DB /* AppStoreRibs */,
 				2FF654252CF318290046C9DB /* AppStoreRibsTests */,
 				2FF6542F2CF318290046C9DB /* AppStoreRibsUITests */,
+				2F85A81A2CFDDE7F008B3E04 /* Frameworks */,
 				2FF6540D2CF318270046C9DB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -131,6 +141,7 @@
 			name = AppStoreRibs;
 			packageProductDependencies = (
 				2FC9F67D2CF8864E00A2F736 /* ModernRIBs */,
+				2F85A81E2CFDDF4B008B3E04 /* CombineExt */,
 			);
 			productName = AppStoreRibs;
 			productReference = 2FF6540C2CF318270046C9DB /* AppStoreRibs.app */;
@@ -216,6 +227,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2FC9F5FF2CF8830400A2F736 /* XCRemoteSwiftPackageReference "ModernRIBs" */,
+				2F85A81D2CFDDF40008B3E04 /* XCRemoteSwiftPackageReference "CombineExt" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2FF6540D2CF318270046C9DB /* Products */;
@@ -582,6 +594,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2F85A81D2CFDDF40008B3E04 /* XCRemoteSwiftPackageReference "CombineExt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineExt";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.1;
+			};
+		};
 		2FC9F5FF2CF8830400A2F736 /* XCRemoteSwiftPackageReference "ModernRIBs" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/DevYeom/ModernRIBs.git";
@@ -593,6 +613,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2F85A81E2CFDDF4B008B3E04 /* CombineExt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2F85A81D2CFDDF40008B3E04 /* XCRemoteSwiftPackageReference "CombineExt" */;
+			productName = CombineExt;
+		};
 		2FC9F67D2CF8864E00A2F736 /* ModernRIBs */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ModernRIBs;

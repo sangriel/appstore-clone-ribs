@@ -18,9 +18,6 @@ final class SearchComponent: Component<SearchDependency>,
                              SearchInteractorDependency,
                              SearchListDependency {
 
-    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> = PassthroughSubject<SearchBarInteractor.SearchState, Never>()
-    var reloadDataSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    var searchResults: [SearchResult] = []
     let searchUseCase: SearchUseCase
     
     init(dependency : SearchDependency,
