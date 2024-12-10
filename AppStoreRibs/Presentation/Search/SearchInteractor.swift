@@ -23,24 +23,31 @@ protocol SearchListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
-protocol SearchInteractorDependency {
-    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
+protocol SearchInteractorDependency : AnyObject {
+    var searchUseCase : SearchUseCase { get }
 }
 
 final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchInteractable, SearchPresentableListener {
-    
+ 
     weak var router: SearchRouting?
     weak var listener: SearchListener?
 
-    private let dependency: SearchInteractorDependency
+    private let dependency : SearchInteractorDependency
     
+    private var _currentSearchStateSubject : CurrentValuePublisher<SearchBarInteractor.SearchState> = .init(initialValue: .onEmpty)
+    private var _reloadSearchListDataSubject : PassthroughSubject<Void,Never> = .init()
+    private var _searchResults: [SearchResult] = []
+    
+    
+    private var cancellables: Set<AnyCancellable> = .init()
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
     init(presenter: SearchPresentable,
-                  dependency : SearchInteractorDependency) {
+         dependency : SearchInteractorDependency) {
         self.dependency = dependency
         super.init(presenter: presenter)
         presenter.listener = self
+        self.cancellables = .init()
     }
 
     override func didBecomeActive() {
@@ -58,10 +65,39 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
 //MARK: - SearchBarInteractor Listener
 extension SearchInteractor {
     func searchStateDidChange(state: SearchBarInteractor.SearchState) {
-        dependency.currentSearchStateSubject.send(state)
+        _currentSearchStateSubject.send(state)
     }
     
     func searchTextDidChange(text: String) {
         
     }
+    
+    func requestRemoteFetch(term: String) {
+        dependency.searchUseCase.fetchRemote(term: term)
+            .sink { error in
+                if case let .failure(error) = error {
+                    print(error)
+                }
+            } receiveValue: { [weak self] result in
+                guard let self = self else { return }
+                self._searchResults = result
+                self._reloadSearchListDataSubject.send()
+            }
+            .store(in: &cancellables)
+    }
 }
+//MARK: - SearchListInteractor Responder
+extension SearchInteractor {
+    var searchState: ReadOnlyCurrentValuePublisher<SearchBarInteractor.SearchState> {
+        _currentSearchStateSubject
+    }
+    
+    var reloadTableViewData: ReadOnlyPassthroughSubject<Void, Never> {
+        .init(_reloadSearchListDataSubject)
+    }
+    
+    var searchResults: [SearchResult] {
+        _searchResults
+    }
+}
+

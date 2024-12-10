@@ -17,14 +17,14 @@ protocol SearchListPresentable: Presentable {
     var listener: SearchListPresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
     func changeTableViewAdapater(_ adapter : any TableViewAdapter)
+    func reloadTableView()
 }
 
 protocol SearchListListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-}
-
-protocol SearchListInteractorDependency {
-    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
+    var searchResults : [SearchResult] { get }
+    var searchState : ReadOnlyCurrentValuePublisher<SearchBarInteractor.SearchState> { get }
+    var reloadTableViewData : ReadOnlyPassthroughSubject<Void, Never>  { get }
 }
 
 final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, SearchListInteractable, SearchListPresentableListener {
@@ -36,17 +36,14 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
     private var matchSearchWordTableViewAdapter: (any MatchSearchWordTableViewAdapter)?
     private var searchResultTableViewAdapater : (any SearchResultTableViewAdapter)?
     
-    private let dependency : SearchListInteractorDependency
     private var cancellables: Set<AnyCancellable> = .init()
-    
+    private var currentState : SearchBarInteractor.SearchState = .onEmpty
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
     init(presenter: SearchListPresentable,
-         dependency : SearchListInteractorDependency,
          recentSearchWordTableViewAdapter: any RecentSearchWordTableViewAdapter,
          matchSearchWordTableViewAdapater : any MatchSearchWordTableViewAdapter,
-    searchResultTableViewAdapater : any SearchResultTableViewAdapter) {
-        self.dependency = dependency
+         searchResultTableViewAdapater : any SearchResultTableViewAdapter) {
         self.cancellables = .init()
         super.init(presenter: presenter)
         presenter.listener = self
@@ -77,10 +74,11 @@ final class SearchListInteractor: PresentableInteractor<SearchListPresentable>, 
 }
 extension SearchListInteractor {
     private func bindDependencies() {
-        dependency.currentSearchStateSubject
+        listener?.searchState
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
+            .sink(receiveValue: { [weak self] state in
                 guard let self = self else { return }
+                self.currentState = state
                 if state == .onEmpty {
                     guard let adapter = recentSearchWordTableViewAdapter else { return }
                     self.presenter.changeTableViewAdapater(adapter)
@@ -93,20 +91,36 @@ extension SearchListInteractor {
                     guard let adapter = searchResultTableViewAdapater else { return }
                     self.presenter.changeTableViewAdapater(adapter)
                 }
-            }
+            })
+            .store(in: &cancellables)
+        
+        listener?.reloadTableViewData
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.presenter.reloadTableView()
+            })
             .store(in: &cancellables)
     }
     
 }
 extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, RecentSearchWordTableViewViewAdapterDelegate {
     var numberOfItems: Int {
-        //TODO: 나중에 repository에서 바로 끌어오는 식으로
-        return 10
+        switch currentState {
+        case .onComplete:
+            return listener?.searchResults.count ?? 0
+        case .onEmpty:
+            return 0
+        case .onSearch:
+            return 0
+        }
     }
 }
 extension SearchListInteractor : MatchSearchWordTableViewDataSource, MatchSearchWordTableViewAdapterDelegate {
-    
+ 
 }
 extension SearchListInteractor : SearchResultTableViewAdapterDataSource, SearchResultTableViewAdapterDelegate {
     
+    func getSearchResult(at IndexPath: IndexPath) -> SearchResult? {
+        return listener?.searchResults[safe : IndexPath.row]
+    }
 }

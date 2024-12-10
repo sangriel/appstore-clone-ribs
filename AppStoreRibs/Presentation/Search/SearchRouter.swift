@@ -7,7 +7,9 @@
 
 import ModernRIBs
 
-protocol SearchInteractable: Interactable, SearchBarListener, SearchListListener{
+protocol SearchInteractable: Interactable,
+                             SearchBarListener,
+                             SearchListListener {
     var router: SearchRouting? { get set }
     var listener: SearchListener? { get set }
 }

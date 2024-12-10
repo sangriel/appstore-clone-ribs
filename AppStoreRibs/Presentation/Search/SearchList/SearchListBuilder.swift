@@ -10,18 +10,13 @@ import Combine
 protocol SearchListDependency: Dependency {
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
     // created by this RIB.
-    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> { get }
 }
 
-final class SearchListComponent: Component<SearchListDependency>,
-                                 SearchListInteractorDependency {
-    var currentSearchStateSubject : PassthroughSubject<SearchBarInteractor.SearchState,Never> {
-        dependency.currentSearchStateSubject
-    }
+final class SearchListComponent: Component<SearchListDependency> {
+    
 }
 
 // MARK: - Builder
-
 protocol SearchListBuildable: Buildable {
     func build(withListener listener: SearchListListener) -> SearchListRouting
 }
@@ -37,7 +32,6 @@ final class SearchListBuilder: Builder<SearchListDependency>, SearchListBuildabl
         let viewController = SearchListViewController()
         let tableView = viewController.tableView
         let interactor = SearchListInteractor(presenter: viewController,
-                                              dependency: component,
                                               recentSearchWordTableViewAdapter: RecentSearchWordTableViewAdapterImp(tableView: tableView),
                                               matchSearchWordTableViewAdapater: MatchSearchWordTableViewAdapterImp(tableView: tableView),
                                               searchResultTableViewAdapater: SearchResultTableViewAdapterImp(tableView: tableView))

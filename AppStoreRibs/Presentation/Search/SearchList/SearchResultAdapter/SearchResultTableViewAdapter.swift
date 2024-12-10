@@ -20,6 +20,7 @@ protocol SearchResultTableViewAdapterDelegate : AnyObject {
 
 protocol SearchResultTableViewAdapterDataSource : AnyObject {
     var numberOfItems : Int { get }
+    func getSearchResult(at IndexPath : IndexPath) -> SearchResult?
 }
 
 final class SearchResultTableViewAdapterImp : NSObject, SearchResultTableViewAdapter {
@@ -44,6 +45,9 @@ extension SearchResultTableViewAdapterImp : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultCell.cellId, for: indexPath) as! SearchResultCell
+        if let searchResult = dataSource?.getSearchResult(at: indexPath) {
+            cell.configureCell(searchResult: searchResult)
+        }
         return cell
     }
 }

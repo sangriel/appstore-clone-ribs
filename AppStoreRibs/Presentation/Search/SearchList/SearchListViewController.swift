@@ -40,6 +40,10 @@ final class SearchListViewController: UIViewController, SearchListPresentable, S
         adapter.setTableView(tableView)
         tableView.reloadData()
     }
+    
+    func reloadTableView() {
+        self.tableView.reloadData()
+    }
 }
 extension SearchListViewController {
     private func setLayout() {
