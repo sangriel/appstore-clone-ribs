@@ -41,8 +41,9 @@ public class CurrentValuePublisher<Element>: ReadOnlyCurrentValuePublisher<Eleme
         currentValueRelay.accept(value)
     }
 }
+ 
 
-final class ReadOnlyPassthroughSubject<Output, Failure: Error> : Publisher {
+class ReadOnlyPassthroughSubject<Output, Failure: Error> : Publisher {
     
     private let passthroughSubject: PassthroughSubject<Output, Failure>
     
@@ -53,4 +54,4 @@ final class ReadOnlyPassthroughSubject<Output, Failure: Error> : Publisher {
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
         passthroughSubject.receive(subscriber: subscriber)
     }
-}
+} 
