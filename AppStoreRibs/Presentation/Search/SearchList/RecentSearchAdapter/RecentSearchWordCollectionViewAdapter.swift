@@ -19,6 +19,7 @@ protocol RecentSearchWordTableViewViewAdapterDelegate : AnyObject {
 
 protocol RecentSearchWordTableViewAdapterDataSource : AnyObject {
     var numberOfItems : Int { get }
+    func getRecentSearchWord(at IndexPath : IndexPath) -> RecentSearchWord?
 }
 
 final class RecentSearchWordTableViewAdapterImp : NSObject, RecentSearchWordTableViewAdapter {
@@ -47,6 +48,9 @@ extension RecentSearchWordTableViewAdapterImp : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RecentSearchWordCell.cellId, for: indexPath) as! RecentSearchWordCell
+        if let recentSearchWord = dataSource?.getRecentSearchWord(at: indexPath) {
+            cell.configureCell(recentSearchWord: recentSearchWord)
+        }
         return cell
     }
 }

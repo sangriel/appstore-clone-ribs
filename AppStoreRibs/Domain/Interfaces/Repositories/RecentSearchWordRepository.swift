@@ -11,6 +11,5 @@ import Combine
 
 protocol RecentSearchWordRepository {
     func getRecentSearchWord(term : String) -> AnyPublisher<[RecentSearchWord],Error>
-    
     func saveRecentSearchWord(term : String)
 }

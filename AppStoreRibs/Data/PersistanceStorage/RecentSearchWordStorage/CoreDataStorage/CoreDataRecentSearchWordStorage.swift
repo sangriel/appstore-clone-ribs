@@ -22,8 +22,10 @@ extension CoreDataRecentSearchWordStorage : RecentSearchWordStorage {
             
             persistanceStorage.performBackgroundTask { context in
                 let request: NSFetchRequest = RecentSearchWordEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "%K CONTAINS %@",
-                                                #keyPath(RecentSearchWordEntity.term), term)
+                if term != "" {
+                    request.predicate = NSPredicate(format: "%K CONTAINS %@",
+                                                    #keyPath(RecentSearchWordEntity.term), term)
+                }
                 
                 do {
                     let response = try context.fetch(request)
@@ -36,6 +38,8 @@ extension CoreDataRecentSearchWordStorage : RecentSearchWordStorage {
             }
         }.eraseToAnyPublisher()
     }
+    
+    
     
     func saveRecentSearchWord(term: String) {
         guard term.isEmpty == false else  { return }

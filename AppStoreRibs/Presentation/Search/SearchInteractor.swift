@@ -25,6 +25,7 @@ protocol SearchListener: AnyObject {
 
 protocol SearchInteractorDependency : AnyObject {
     var searchUseCase : SearchUseCase { get }
+    var recentSearchWordUseCase : RecentSearchWordUseCase { get }
 }
 
 final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchInteractable, SearchPresentableListener {
@@ -37,6 +38,7 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
     private var _currentSearchStateSubject : CurrentValuePublisher<SearchBarInteractor.SearchState> = .init(initialValue: .onEmpty)
     private var _reloadSearchListDataSubject : PassthroughSubject<Void,Never> = .init()
     private var _searchResults: [SearchResult] = []
+    private var _recentSearchWords : [RecentSearchWord] = []
     
     
     private var cancellables: Set<AnyCancellable> = .init()
@@ -55,6 +57,7 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
         // TODO: Implement business logic here.
         router?.attachSearchList()
         router?.attachSearcBar()
+        self.searchStateDidChange(state: .onEmpty)
     }
 
     override func willResignActive() {
@@ -66,6 +69,19 @@ final class SearchInteractor: PresentableInteractor<SearchPresentable>, SearchIn
 extension SearchInteractor {
     func searchStateDidChange(state: SearchBarInteractor.SearchState) {
         _currentSearchStateSubject.send(state)
+        if state == .onEmpty {
+            self.dependency.recentSearchWordUseCase.getRecentSearchWord(term: "")
+                .sink { error in
+                    if case let .failure(error) = error {
+                        print(error)
+                    }
+                } receiveValue: { [weak self] result  in
+                    self?._recentSearchWords = result
+                    self?._reloadSearchListDataSubject.send()
+                }
+                .store(in: &cancellables)
+
+        }
     }
     
     func searchTextDidChange(text: String) {
@@ -80,6 +96,7 @@ extension SearchInteractor {
                 }
             } receiveValue: { [weak self] result in
                 guard let self = self else { return }
+                self.dependency.recentSearchWordUseCase.saveRecentSearchWord(term: term)
                 self._searchResults = result
                 self._reloadSearchListDataSubject.send()
             }
@@ -98,6 +115,10 @@ extension SearchInteractor {
     
     var searchResults: [SearchResult] {
         _searchResults
+    }
+    
+    var recentSearchWords: [RecentSearchWord] {
+        _recentSearchWords
     }
 }
 
