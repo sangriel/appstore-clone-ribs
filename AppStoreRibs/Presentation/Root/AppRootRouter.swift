@@ -68,8 +68,12 @@ final class AppRootRouter: LaunchRouter<AppRootInteractable, AppRootViewControll
         
         let searchRepository = DefaultSearchRepository(networkService: networkService)
         let searchUseCase = DefaultSearchUseCase(searchRepository: searchRepository)
+        
+        let recentSearchWordRepository = DefaultRecentSearchWordRepository(storage: CoreDataRecentSearchWordStorage())
+        let recentSearchWordUseCase = DefaultRecentSearchWordUseCase(recentSearchWordRepository: recentSearchWordRepository)
         let searchRouting = search.build(withListener: interactor,
-                                         searchUseCase: searchUseCase)
+                                         searchUseCase: searchUseCase,
+                                         recentSearchWordUseCase: recentSearchWordUseCase)
         
         attachChild(todayRouting)
         attachChild(gameRouting)
