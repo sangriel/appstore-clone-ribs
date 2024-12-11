@@ -36,6 +36,11 @@ class RecentSearchWordCell : UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    func configureCell(recentSearchWord : RecentSearchWord) {
+        self.keyWordLabel.text = recentSearchWord.searchWord
+    }
 }
 extension RecentSearchWordCell {
     private func setLayout(){

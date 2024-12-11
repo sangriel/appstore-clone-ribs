@@ -22,7 +22,10 @@ protocol SearchListPresentable: Presentable {
 
 protocol SearchListListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    
+    
     var searchResults : [SearchResult] { get }
+    var recentSearchWords : [RecentSearchWord] { get }
     var searchState : ReadOnlyCurrentValuePublisher<SearchBarInteractor.SearchState> { get }
     var reloadTableViewData : ReadOnlyPassthroughSubject<Void, Never>  { get }
 }
@@ -109,10 +112,14 @@ extension SearchListInteractor : RecentSearchWordTableViewAdapterDataSource, Rec
         case .onComplete:
             return listener?.searchResults.count ?? 0
         case .onEmpty:
-            return 0
+            return listener?.recentSearchWords.count ?? 0
         case .onSearch:
             return 0
         }
+    }
+    
+    func getRecentSearchWord(at IndexPath: IndexPath) -> RecentSearchWord? {
+        return listener?.recentSearchWords[safe : IndexPath.row]
     }
 }
 extension SearchListInteractor : MatchSearchWordTableViewDataSource, MatchSearchWordTableViewAdapterDelegate {

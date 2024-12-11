@@ -19,10 +19,13 @@ final class SearchComponent: Component<SearchDependency>,
                              SearchListDependency {
 
     let searchUseCase: SearchUseCase
+    let recentSearchWordUseCase : RecentSearchWordUseCase
     
     init(dependency : SearchDependency,
-         searchUseCase : SearchUseCase) {
+         searchUseCase : SearchUseCase,
+         recentSearWordUseCase : RecentSearchWordUseCase) {
         self.searchUseCase = searchUseCase
+        self.recentSearchWordUseCase = recentSearWordUseCase
         super.init(dependency: dependency)
     }
 }
@@ -30,7 +33,7 @@ final class SearchComponent: Component<SearchDependency>,
 // MARK: - Builder
 
 protocol SearchBuildable: Buildable {
-    func build(withListener listener: SearchListener,searchUseCase : SearchUseCase) -> SearchRouting
+    func build(withListener listener: SearchListener,searchUseCase : SearchUseCase,recentSearchWordUseCase : RecentSearchWordUseCase) -> SearchRouting
 }
 
 final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
@@ -39,9 +42,10 @@ final class SearchBuilder: Builder<SearchDependency>, SearchBuildable {
         super.init(dependency: dependency)
     }
 
-    func build(withListener listener: SearchListener,searchUseCase : SearchUseCase) -> SearchRouting {
+    func build(withListener listener: SearchListener,searchUseCase : SearchUseCase,recentSearchWordUseCase : RecentSearchWordUseCase) -> SearchRouting {
         let component = SearchComponent(dependency: dependency,
-                                        searchUseCase: searchUseCase)
+                                        searchUseCase: searchUseCase,
+                                        recentSearWordUseCase : recentSearchWordUseCase)
         let viewController = SearchViewController()
         let interactor = SearchInteractor(presenter: viewController,
                                           dependency: component)
