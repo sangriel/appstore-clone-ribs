@@ -1,18 +1,19 @@
 //
-//  DefaultSearchPersistanceRepository.swift
+//  CoreDataRecentSearchWordStorage.swift
 //  AppStoreRibs
 //
 //  Created by sangmin han on 12/11/24.
 //
 
 import Foundation
-import CoreData
 import Combine
+import CoreData
 
-
-final class DefaultSearchPersistanceRepository : SearchPersistanceRepository {
-    private let persistanceStorage : CoreDataStorage = CoreDataStorage.shared
+final class CoreDataRecentSearchWordStorage {
+    private let persistanceStorage = CoreDataStorage.shared
     
+}
+extension CoreDataRecentSearchWordStorage : RecentSearchWordStorage {
     func getRecentSearchWord(term: String) -> AnyPublisher<[RecentSearchWord], any Error> {
         Future<[RecentSearchWord],Error> { [weak self] promise in
             guard let self = self else {
@@ -49,7 +50,4 @@ final class DefaultSearchPersistanceRepository : SearchPersistanceRepository {
             }
         }
     }
-    
 }
-
-
