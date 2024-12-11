@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F4CF3E12D09C78100994F52 /* RecentSearchWordEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4CF3DF2D09C78100994F52 /* RecentSearchWordEntity+CoreDataClass.swift */; };
+		2F4CF3E22D09C78100994F52 /* RecentSearchWordEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4CF3E02D09C78100994F52 /* RecentSearchWordEntity+CoreDataProperties.swift */; };
 		2F85A81F2CFDDF4B008B3E04 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 2F85A81E2CFDDF4B008B3E04 /* CombineExt */; };
 		2FC9F67E2CF8864E00A2F736 /* ModernRIBs in Frameworks */ = {isa = PBXBuildFile; productRef = 2FC9F67D2CF8864E00A2F736 /* ModernRIBs */; };
 /* End PBXBuildFile section */
@@ -29,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F4CF3DF2D09C78100994F52 /* RecentSearchWordEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentSearchWordEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		2F4CF3E02D09C78100994F52 /* RecentSearchWordEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecentSearchWordEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2FF6540C2CF318270046C9DB /* AppStoreRibs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppStoreRibs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF654222CF318290046C9DB /* AppStoreRibsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppStoreRibsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FF6542C2CF318290046C9DB /* AppStoreRibsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppStoreRibsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +106,8 @@
 		2FF654032CF318270046C9DB = {
 			isa = PBXGroup;
 			children = (
+				2F4CF3DF2D09C78100994F52 /* RecentSearchWordEntity+CoreDataClass.swift */,
+				2F4CF3E02D09C78100994F52 /* RecentSearchWordEntity+CoreDataProperties.swift */,
 				2FF6540E2CF318270046C9DB /* AppStoreRibs */,
 				2FF654252CF318290046C9DB /* AppStoreRibsTests */,
 				2FF6542F2CF318290046C9DB /* AppStoreRibsUITests */,
@@ -270,6 +276,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F4CF3E12D09C78100994F52 /* RecentSearchWordEntity+CoreDataClass.swift in Sources */,
+				2F4CF3E22D09C78100994F52 /* RecentSearchWordEntity+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
