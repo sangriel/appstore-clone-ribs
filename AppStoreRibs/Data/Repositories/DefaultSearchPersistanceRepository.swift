@@ -11,12 +11,29 @@ import Combine
 
 
 final class DefaultSearchPersistanceRepository : SearchPersistanceRepository {
-   
     private let persistanceStorage : CoreDataStorage = CoreDataStorage.shared
     
     func getRecentSearchWord(term: String) -> AnyPublisher<[RecentSearchWord], any Error> {
-        return Empty<[RecentSearchWord], any Error>()
-            .eraseToAnyPublisher()
+        Future<[RecentSearchWord],Error> { [weak self] promise in
+            guard let self = self else {
+                return
+            }
+            
+            persistanceStorage.performBackgroundTask { context in
+                let request: NSFetchRequest = RecentSearchWordEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "%K CONTAINS %@",
+                                                #keyPath(RecentSearchWordEntity.term), term)
+                
+                do {
+                    let response = try context.fetch(request)
+                    promise(.success(response.map{ $0.toRecentSearchWord() }))
+                }
+                catch(let error) {
+                    print(error.localizedDescription)
+                    promise(.failure(error))
+                }
+            }
+        }.eraseToAnyPublisher()
     }
     
     func saveRecentSearchWord(term: String) {
@@ -24,6 +41,7 @@ final class DefaultSearchPersistanceRepository : SearchPersistanceRepository {
         persistanceStorage.performBackgroundTask { context in
             let entity = RecentSearchWordEntity(context: context)
             entity.term = term
+            entity.id = UUID().uuidString
             do {
                 try context.save()
             } catch let error as NSError {

@@ -8,10 +8,10 @@
 import Foundation
 
 struct RecentSearchWord {
-    let id : Int64
+    let id : String
     let searchWord : String
    
-    init(id : Int64, searchWord : String) {
+    init(id : String, searchWord : String) {
         self.id = id
         self.searchWord = searchWord
     }
