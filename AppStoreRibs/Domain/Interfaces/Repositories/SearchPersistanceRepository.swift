@@ -10,4 +10,6 @@ import Combine
 
 protocol SearchPersistanceRepository {
     func getRecentSearchWord(term : String) -> AnyPublisher<[RecentSearchWord],Error>
+    
+    func saveRecentSearchWord(term : String)
 }
